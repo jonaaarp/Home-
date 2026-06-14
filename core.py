@@ -1,21 +1,23 @@
 import os
 
 class Weapon:
-    def __init__(self):
-        self.name = "AK47"
+    def __init__(self, name, damage, price):
+        self.name = name
+        self.damage = damage
+        self.price = price
 
 class Fighter:
-    def __init__(self, n, v, w):
-        self.nombre = n
-        self.vida = v
-        self.weapon = w.__dict__
+    def __init__(self, name, vida, weapon):
+        self.name = name
+        self.vida = vida
+        self.weapon = weapon.__dict__
         
     def attack():
         print("attacking, (visually)")
 
 class Player(Fighter):
-    def __init__(self, nombre, vida, w):
-        super().__init__(nombre, vida, w)
+    def __init__(self, name, vida, weapon):
+        super().__init__(name, vida, weapon)
         
         self.gold = 0
         self.should_i_leaving = False
@@ -29,18 +31,29 @@ def menu():
     print("1. start")
     print("2. settings")
     print("2. exit\n")
+  
+    
+    
+    
 
 
 
 def main():
-    ak = Weapon()
-    player = Player("Player 1", 100, ak)
+
+    list_weapons = [
+      Weapon("hand", 10, 0),
+      Weapon("kitchen knife", 50, 50)]
+      
+    player = Player("Player 1", 100, list_weapons[0])
     
     
-    print(player.__dict__)
-    return
-    while True:
+    # print(player.__dict__)
+    
+    while not player.should_i_leaving:
         os.system("clear")
+        print(player.name,
+        player.gold,
+        player.weapon["name"])
         menu()
         action = input("Introduce tu action: ")
         
@@ -50,6 +63,7 @@ def main():
             
         elif action == "3":
             print("leaving the program...")
+            player.leaving()
             
     
     
