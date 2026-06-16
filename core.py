@@ -18,8 +18,8 @@ class Fighter:
     def __init__(self, name, life, weapon):
         self.name = name
         self.life = life
-        self.weapon = weapon.__dict__
-        self.potion = ["Fuego", "Agua"]
+        self.weapon = weapon
+        self.potion = []
         
     def attack(self):
         print("attacking, (visually)")
@@ -69,14 +69,14 @@ def main():
     
     while not player.should_i_leaving:
         os.system("clear")
-        print("name", player.name,
-        "\nmoney: ", player.gold,
-        "\nweapon: ", player.weapon["name"])
+        print("name:", player.name,
+        "\nmoney:", player.gold,
+        "\nweapon:", player.weapon.name)
         
         if player.state == Game_state.MENU:
             menu()
         
-            action = input("Introduce tu action: ")
+            action = input("Enter your action: ")
         
             if action == "1":
                 player.state = Game_state.GAME
