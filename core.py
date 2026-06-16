@@ -1,4 +1,12 @@
 import os
+import random
+
+
+
+class Game_state:
+    MENU = 0
+    GAME = 1
+
 
 class Weapon:
     def __init__(self, name, damage, price):
@@ -7,17 +15,19 @@ class Weapon:
         self.price = price
 
 class Fighter:
-    def __init__(self, name, vida, weapon):
+    def __init__(self, name, life, weapon):
         self.name = name
-        self.vida = vida
+        self.life = life
         self.weapon = weapon.__dict__
+        self.potion = ["Fuego", "Agua"]
         
-    def attack():
+    def attack(self):
         print("attacking, (visually)")
 
 class Player(Fighter):
-    def __init__(self, name, vida, weapon):
-        super().__init__(name, vida, weapon)
+    state = 0
+    def __init__(self, name, life, weapon):
+        super().__init__(name, life, weapon)
         
         self.gold = 0
         self.should_i_leaving = False
@@ -29,43 +39,58 @@ def menu():
     print("press the option key\n")
     
     print("1. start")
-    print("2. settings")
-    print("2. exit\n")
-  
-    
-    
-    
+    print("2. shop")
+    print("3. settings")
+    print("4. exit\n")
 
 
-
+def menu_fight(player: Player, bot: Fighter):
+    os.system("clear")
+    print(player.name, 6 * " ", bot.name)
+    print(10 * " ", "vs")
+    print("life:",player.life, 5 * " ", "life:", bot.life)
+    print("\n1. attack")
+    print("your potions: ", end="")
+    for potions in player.potion:
+        print(potions, end=" - ")
+    input()
+    
 def main():
-
+    
     list_weapons = [
       Weapon("hand", 10, 0),
       Weapon("kitchen knife", 50, 50)]
       
+    list_bots = [
+      Fighter("bot test", 100, list_weapons[0])
+    ]
+      
     player = Player("Player 1", 100, list_weapons[0])
-    
-    
-    # print(player.__dict__)
     
     while not player.should_i_leaving:
         os.system("clear")
-        print(player.name,
-        player.gold,
-        player.weapon["name"])
-        menu()
-        action = input("Introduce tu action: ")
+        print("name", player.name,
+        "\nmoney: ", player.gold,
+        "\nweapon: ", player.weapon["name"])
         
+        if player.state == Game_state.MENU:
+            menu()
         
-        if action == "1":
-            print("This option is not valid at this time.")
+            action = input("Introduce tu action: ")
+        
+            if action == "1":
+                player.state = Game_state.GAME
+                
+            elif action == "3":
+                print("leaving the program...")
+                player.leaving()
+                
+        
+        if player.state == Game_state.GAME:
+            chosen_enemy = random.choice(list_bots)
+            menu_fight(player, chosen_enemy)
+        
             
-        elif action == "3":
-            print("leaving the program...")
-            player.leaving()
             
-    
-    
 if __name__ == "__main__":
     main()    
